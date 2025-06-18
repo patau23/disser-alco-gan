@@ -42,6 +42,7 @@ optimizerG = optim.Adam(netG.parameters(), lr=lr, betas=(beta1, 0.999))
 
 # ========== Обучение ==========
 print("🔁 Starting Training Loop...")
+# ...existing code...
 
 for epoch in range(num_epochs):
     for i, (real_images, _) in enumerate(dataloader):
@@ -57,13 +58,15 @@ for epoch in range(num_epochs):
 
         # Потери на реальных
         output = netD(real_images)
-        loss_real = criterion(output, real_label)
+        real_label_resized = torch.ones_like(output)  # Приводим метки к размеру выхода
+        loss_real = criterion(output, real_label_resized)
 
         # Потери на фейках
         noise = torch.randn(b_size, nz, 1, 1, device=device)
         fake_images = netG(noise)
         output = netD(fake_images.detach())
-        loss_fake = criterion(output, fake_label)
+        fake_label_resized = torch.zeros_like(output)  # Приводим метки к размеру выхода
+        loss_fake = criterion(output, fake_label_resized)
 
         # Суммарная потеря дискриминатора
         loss_D = loss_real + loss_fake
@@ -73,12 +76,13 @@ for epoch in range(num_epochs):
         # === Обновляем генератор ===
         netG.zero_grad()
         output = netD(fake_images)
-        loss_G = criterion(output, real_label)
+        loss_G = criterion(output, real_label_resized)  # Используем метки реальных данных
         loss_G.backward()
         optimizerG.step()
 
     print(f"[{epoch+1}/{num_epochs}] Loss_D: {loss_D.item():.4f}  Loss_G: {loss_G.item():.4f}")
 
+# ...existing code...
 # ========== Сохраняем генератор ==========
 os.makedirs('output', exist_ok=True)
 torch.save(netG.state_dict(), 'output/generator.pth')

@@ -56,14 +56,26 @@ for epoch in range(10):
 
 # Графики
 plt.figure(figsize=(10, 4))
+
+# Training Loss
 plt.subplot(1, 2, 1)
-plt.plot(train_losses, label='Train Loss')
-plt.xlabel('Epoch'), plt.ylabel('Loss'), plt.title('Training Loss')
+plt.plot(train_losses, label='Train Loss', color='blue')
+plt.xlabel('Epoch')
+plt.ylabel('Loss')
+plt.title('Training Loss')
+plt.legend()
+
+# Validation Accuracy
 plt.subplot(1, 2, 2)
-plt.plot(val_accuracies, label='Val Accuracy')
-plt.xlabel('Epoch'), plt.ylabel('Accuracy'), plt.title('Validation Accuracy')
+plt.plot(val_accuracies, label='Val Accuracy', color='green')
+plt.xlabel('Epoch')
+plt.ylabel('Accuracy')
+plt.title('Validation Accuracy')
+plt.legend()
+
 plt.tight_layout()
 plt.savefig("classifier_metrics.png")
+plt.show()
 
 # Тест на синтетике
 test_data = datasets.ImageFolder('data/classification/test_synthetic', transform=transform)
