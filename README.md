@@ -10,3 +10,4 @@ This project contains simple PyTorch scripts for training a DCGAN and a small CN
 3. Execute `python augment_data.py` to create synthetic images in `augmented_dataset`.
 4. Use the generated data to train the classifier in `classifier/train_classifier.py`.
 
+
