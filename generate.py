@@ -1,6 +1,6 @@
 import torch
 from torchvision.utils import save_image
-from models.gan import Generator
+from gan_models.generator import Generator
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 netG = Generator(100, 64, 3).to(device)

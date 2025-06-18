@@ -2,7 +2,8 @@ import torch
 from torch import nn, optim
 from torch.utils.data import DataLoader
 from torchvision import datasets, transforms
-from models.gan import Generator, Discriminator
+from gan_models.generator import Generator
+from gan_models.discriminator import Discriminator
 import os
 
 # ========== Гиперпараметры ==========
@@ -17,7 +18,7 @@ beta1 = 0.5
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-# ========== Трансформации для CelebA ==========
+# ========== Трансформации для изображений ==========
 transform = transforms.Compose([
     transforms.Resize(image_size),
     transforms.CenterCrop(image_size),
@@ -26,8 +27,8 @@ transform = transforms.Compose([
 ])
 
 # ========== Путь к изображениям ==========
-# Убедись, что у тебя структура: data/celeba/faces/000001.jpg и т.д.
-dataset_path = 'data/celeba'
+# Структура: dataset/sober/*.jpg и dataset/drunk/*.jpg
+dataset_path = 'dataset'
 dataset = datasets.ImageFolder(root=dataset_path, transform=transform)
 dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
 
